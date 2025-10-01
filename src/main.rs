@@ -1,10 +1,26 @@
 fn main() {
-    // 存储 todoList 的标题和内容
-    let mut inputs: Vec<String> = Vec::new();
+    // list 显示所有todolist
+    let mut todos: Vec<String> = Vec::new();
+    todos.push(String::from("learn rust"));
+    todos.push(String::from("work"));
+    todos.push(String::from("play"));
+    
     // args[0] 存储程序的exe文件地址
     let args: Vec<String> = std::env::args().collect();
+    
+    if args[1].clone() == "list" {
+      for todo in todos {
+        println!("todo title: {}", todo);
+      }
+      return;
+    }
+
+    
+    let args: Vec<String> = std::env::args().collect();
     let mut ok = args[1].clone() == "create";
-  
+
+    // 存储 todoList 的标题和内容
+    let mut inputs: Vec<String> = Vec::new();
     while ok {
       let len = inputs.len();
   
