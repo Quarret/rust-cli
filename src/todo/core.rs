@@ -14,7 +14,12 @@ Create {
     content: Option<String>,
 },
 /// List all todo items
-List,
+List {
+    #[arg(short, long)]
+    title: Option<String>,
+    #[arg(short, long)]
+    content: Option<String>,
+},
 }
 
 // rust 模块默认private

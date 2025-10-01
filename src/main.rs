@@ -22,8 +22,12 @@ fn main() {
   let mut todos = read_todo_list(save_file);
 
   match args.command {
-    TodoCommand::Create {title, content} => todo::create::create_todo(&mut todos, title, content),
-    TodoCommand::List => todo::list::list_todo(&todos),
+    TodoCommand::Create {title, content} => {
+        todo::create::create_todo(&mut todos, title, content)
+    }
+    TodoCommand::List {title, content} => {
+        todo::list::list_todo(&todos, title, content)
+    },
   }
 
   save_todo_list(save_file, &todos);

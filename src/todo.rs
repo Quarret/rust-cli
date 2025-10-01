@@ -2,6 +2,7 @@
 pub mod core;
 pub mod create;
 pub mod storage;
+pub mod list; 
 
 /*
 我们可以使用 mod 关键字来声明子模块。同样的, 子模块需要 pub 关键字修饰来公开给外部访问。
@@ -11,12 +12,5 @@ pub mod storage;
 这里使用的就是使用与模块同名的 .rs 文件作为模块入口声明。
 需要注意的是, 模块是可以直接声明的, 而无需单独文件。
 */
-pub mod list {
-    use super::core::TodoItem;
-  
-    pub fn list_todo(todos: &Vec<TodoItem>) {
-      for todo in todos {
-        println!("todo title: {}, content: {}", todo.title, todo.content);
-      }
-    }
-  }
+
+
