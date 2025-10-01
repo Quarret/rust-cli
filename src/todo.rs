@@ -1,6 +1,8 @@
 // src/todo.rs
 pub mod core;
 pub mod create;
+pub mod storage;
+
 /*
 我们可以使用 mod 关键字来声明子模块。同样的, 子模块需要 pub 关键字修饰来公开给外部访问。
 在 Rust 中, 每个模块都有一个 mod.rs 文件, 该文件是模块的入口文件。 在 mod.rs 文件中, 我们可以定义模块的公开内容, 如结构体、函数、模块等。
