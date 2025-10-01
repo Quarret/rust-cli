@@ -6,7 +6,13 @@ use clap::Subcommand;
 #[derive(Debug, Clone, Subcommand)]
 pub enum TodoCommand {
 /// Create a new todo item
-Create,
+Create {
+    // #[arg(short, long)] 告诉 clap 该字段对应一个参数, 并指定参数的短名称和长名称。
+    #[arg(short, long)]
+    title: Option<String>,
+    #[arg(short, long)]
+    content: Option<String>,
+},
 /// List all todo items
 List,
 }

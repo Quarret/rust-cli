@@ -12,17 +12,17 @@ mod todo;
 struct Program {
   // 告诉 clap 该字段对应一个子命令  
   #[command(subcommand)]
-  
+
   pub command: TodoCommand,
 }
 
 fn main() {
-  let args = Program::parse();
+    let args = Program::parse();
   let save_file = "todo.json";
   let mut todos = read_todo_list(save_file);
 
   match args.command {
-    TodoCommand::Create => todo::create::create_todo(&mut todos),
+    TodoCommand::Create {title, content} => todo::create::create_todo(&mut todos, title, content),
     TodoCommand::List => todo::list::list_todo(&todos),
   }
 
