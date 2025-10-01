@@ -87,3 +87,41 @@ pub fn get_todo_list() -> Vec<TodoItem> {
 
     return todos;
 }
+
+
+
+/*
+条件测试
+#[cfg(all(target_os="windows", test))] 表示仅在编译对象为 windows 平台时运行 cargo test 编译。
+#[cfg(all(any(target_os = "ios", target_os = "android"), test))] 表示仅在编译对象为移动端时运行 cargo test 编译。
+#[cfg(all(not(any(target_os = "ios", target_os = "android")), test))] 表示仅在编译对象非移动端时运行 cargo test 编译。
+*/
+#[cfg(test)]
+mod tests {
+  // 因为是子模块, 因此需要使用 super 关键字来引用父模块
+  use super::{Serializer, TodoItem};
+
+  /*
+    assert!(expr): 如果 expr 为假, 抛出异常。
+    assert_eq!(left, right): 如果 left 不等于 right, 抛出异常。
+    assert_ne!(left, right): 如果 left 等于 right, 抛出异常。
+    如果加上 debug_ 前缀, 则只在 Debug 模式运行, 如 debug_assert!(expr)。
+   */
+
+  #[test]
+  fn test_todo_item_creation() {
+    let item = TodoItem::new("test", "content");
+    assert_eq!(item.title, "test");
+    assert_eq!(item.content, "content");
+  }
+
+  #[test]
+  fn test_serialization_roundtrip() {
+    let original = TodoItem::new("test", "content");
+    let serialized = original.serialize();
+    let deserialized = TodoItem::deserialize(serialized);
+
+    assert_eq!(original.title, deserialized.title);
+    assert_eq!(original.content, deserialized.content);
+  }
+}
