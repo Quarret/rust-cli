@@ -1,6 +1,15 @@
 // src/todo/core.rs
 use serde::{Deserialize, Serialize};
 use serde_json;
+use clap::Subcommand;
+
+#[derive(Debug, Clone, Subcommand)]
+pub enum TodoCommand {
+/// Create a new todo item
+Create,
+/// List all todo items
+List,
+}
 
 // rust 模块默认private
 #[derive(Deserialize, Serialize)]
