@@ -34,6 +34,14 @@ new 方法: 用于创建一个新的 TodoItem, 现在可以直接用 TodoItem::n
 serializer 方法: 将当前实例转换为 JSON 字符串。
 deserializer 方法: 从 JSON 字符串还原为 TodoItem 实例。
 */
+
+pub fn create_todo_item(title: &str, content: &str) -> TodoItem {
+    TodoItem {
+        title: title.to_string(),
+        content: content.to_string(),
+    }
+}
+
 impl TodoItem {
     // self == this
     // Self == 当前类
@@ -41,22 +49,35 @@ impl TodoItem {
       create_todo_item(title, content)
     }
   
-    pub fn serializer(&self) -> String {
-      serde_json::to_string(self).unwrap()
-    }
+    // pub fn serializer(&self) -> String {
+    //   serde_json::to_string(self).unwrap()
+    // }
   
-    pub fn deserializer(s: &str) -> Self {
-      serde_json::from_str(s).unwrap()
-    }
+    // pub fn deserializer(s: &str) -> Self {
+    //   serde_json::from_str(s).unwrap()
+    // }
 }
-  
-pub fn create_todo_item(title: &str, content: &str) -> TodoItem {
-    TodoItem {
-        title: title.to_string(),
-        content: content.to_string(),
-    }
+
+// 默认实现替代手动指定类
+pub trait Serializer
+where
+// 单纯self不满足serial和deserial的约束, 要使用 where ... + ... 实现约束
+// 编译器不能推导生命周期, 约束不符合deserial
+    Self: Sized + Serialize + for<'a> Deserialize<'a>,
+{
+  fn serialize(&self) -> String {
+    serde_json::to_string(self).unwrap()
+  }
+
+  fn deserialize<S: Into<String>>(s: S) -> Self {
+    serde_json::from_str(&s.into()).unwrap()
+  }
 }
-  
+
+impl Serializer for TodoItem {}
+
+
+
 pub fn get_todo_list() -> Vec<TodoItem> {
     let mut todos: Vec<TodoItem> = Vec::new();
 
