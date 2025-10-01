@@ -30,13 +30,33 @@ pub fn read_todo_list(save_file: &str) -> Vec<TodoItem> {
   return result;
 }
 
-pub fn save_todo_list(save_file: &str, todos: &Vec<TodoItem>) {
-    // unwrap() 的作用：
-    // - 如果 Result 是 Ok，取出值
-    // - 如果 Result 是 Err，程序 panic（崩溃）
+/// 将item序列化为json保存到文件中, 
+/// 保存过程出错不奔溃返回错误信息,使用match实现, 错误的结束可以用 ? 运算符实现
+// pub fn save_todo_list(save_file: &str, todos: &Vec<TodoItem>) {
+//     match serde_json::to_string(todos) {
+//       Ok(data) => match fs::write(save_file, data) {
+//         Err(msg) => {
+//           println!("save file error: {}", msg);
+//         }
+//         Ok(_) => {
+//           println!("save file success");
+//         }
+//       },
+//       Err(msg) => {
+//         println!("save file error: {}", msg);
+//       }
+//     }
+// }
 
-    let data = serde_json::to_string(todos).unwrap();
-    // 如果文件不存在，会自动创建
-    // 如果文件存在，会完全覆盖
-    fs::write(save_file, data).unwrap();
+/**
+ * 序列化返回的结果是Result<String, error>
+ * 需要同一结果为Result<(), String>
+ * 匿名函数map_err(|e|, e.to_string())实现
+ * ?错误传递
+ * 如果 Result 是 Err，立即返回错误
+ */
+pub fn save_todo_list(save_file: &str, todos: &Vec<TodoItem>) -> Result<(), String> {
+    let data = serde_json::to_string(todos).map_err(|e| e.to_string())?;
+    fs::write(save_file, data).map_err(|e| e.to_string())?;
+    Ok(())
 }
